@@ -1,3 +1,20 @@
+# [1.1.0](https://github.com/nstwfdev/mysql-connection-pool/compare/v1.0.0...v1.1.0) (2022-12-22)
+
+
+### Docs
+
+* add README.MD ([8140820](https://github.com/nstwfdev/mysql-connection-pool/commit/8140820a1c0d22bab5d8e83474833762c977e76b))
+* fix getConnection example in readme ([f132cd6](https://github.com/nstwfdev/mysql-connection-pool/commit/f132cd617884b474ba358948841367d67583d2bb))
+
+### New
+
+* add new 'Pool::query()' and 'Pool::transaction()' shortcut methods ([6e2b73a](https://github.com/nstwfdev/mysql-connection-pool/commit/6e2b73ab30a7e190cdcbab84e9ed7112effd67d0))
+
+### Upgrade
+
+* nstwf/mysql-connection to 1.2.1 ([f4498aa](https://github.com/nstwfdev/mysql-connection-pool/commit/f4498aa86b75797781300ae084a6f0543147c34b))
+* react/async to require-dev ([c46aa6c](https://github.com/nstwfdev/mysql-connection-pool/commit/c46aa6cee3a073820579225fb094cf2ae7d7e7ab))
+
 # 1.0.0 (2022-12-22)
 
 
