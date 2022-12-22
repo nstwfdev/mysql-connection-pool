@@ -34,13 +34,13 @@ final class Pool implements PoolInterface
      * @param string                          $uri                Uri
      * @param ConnectionFactoryInterface|null $factory
      * @param int                             $connectionLimit    0 - for unlimited connections, > 0 - exact count of connections
-     * @param bool                            $waitForConnections If `false` - throw exception while connection limit reached
+     * @param bool                            $waitForConnections If set `false` - throw exception while connection limit reached on `getConnection` method
      */
     public function __construct(
         #[\SensitiveParameter]
         string $uri,
         ConnectionFactoryInterface $factory = null,
-        int $connectionLimit = 0,
+        int $connectionLimit = 5,
         bool $waitForConnections = true,
     ) {
         $this->uri = $uri;
