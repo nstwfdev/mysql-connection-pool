@@ -7,10 +7,12 @@ namespace Nstwf\MysqlConnectionPool;
 use Nstwf\MysqlConnection\ConnectionInterface;
 use Nstwf\MysqlConnection\Factory\ConnectionFactoryInterface;
 use PHPUnit\Framework\TestCase;
+use React\MySQL\QueryResult;
 use React\Promise\PromiseInterface;
 
 
 use function React\Async\await;
+use function React\Promise\resolve;
 
 
 class PoolTest extends TestCase
@@ -172,6 +174,66 @@ class PoolTest extends TestCase
         $connection = await($pool->getConnection());
         $pool->releaseConnection($connection);
         $pool->releaseConnection($connection);
+    }
+
+    public function testQuery()
+    {
+        $connection = $this
+            ->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
+
+        $connection
+            ->expects($this->once())
+            ->method('query')
+            ->with('UPDATE users SET active = 0 WHERE id = 2')
+            ->willReturn(resolve(new QueryResult()));
+
+        $factory = $this
+            ->getMockBuilder(ConnectionFactoryInterface::class)
+            ->getMock();
+
+        $factory
+            ->expects($this->exactly(1))
+            ->method('createConnection')
+            ->with('localhost:3306')
+            ->willReturn($connection);
+
+        $pool = new Pool('localhost:3306', $factory);
+        $queryResult = await($pool->query('UPDATE users SET active = 0 WHERE id = 2'));
+
+        $this->assertEquals(new QueryResult(), $queryResult);
+    }
+
+    public function testTransaction()
+    {
+        $connection = $this
+            ->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
+
+        $connection
+            ->expects($this->once())
+            ->method('transaction')
+            ->willReturn(resolve());
+
+        $factory = $this
+            ->getMockBuilder(ConnectionFactoryInterface::class)
+            ->getMock();
+
+        $factory
+            ->expects($this->exactly(1))
+            ->method('createConnection')
+            ->with('localhost:3306')
+            ->willReturn($connection);
+
+        $pool = new Pool('localhost:3306', $factory);
+
+        $queryResult = await(
+            $pool->transaction(
+                fn(ConnectionInterface $connection) => $connection->query('UPDATE users SET active = 0 WHERE id = 2')
+            )
+        );
+
+        $this->assertEquals(null, $queryResult);
     }
 
     private function assertPromise(PromiseInterface $promise, mixed $expectedPromiseValue, callable $callable)

@@ -14,6 +14,8 @@ Simple connection pool for [mysql client](https://github.com/friends-of-reactphp
         * [Options](#options)
         * [getConnection()](#getconnection)
         * [releaseConnection()](#releaseconnection)
+        * [query()](#query)
+        * [transaction()](#transaction)
 * [Install](#install)
 * [Tests](#tests)
 * [License](#license)
@@ -67,6 +69,24 @@ The `releaseConnection(ConnectionInterface $connection): void` method can be use
 
 ```php
 $pool->releaseConnection($connection);
+```
+
+#### query
+
+The `query(ConnectionInterface $connection): PromiseInterface<QueryResult>` method is a shortcut for callsЖ `getConnection()` -> `query()` -> `releaseConnection()`
+
+```php
+$pool->releaseConnection($connection);
+```
+
+#### transaction
+
+The `transaction(callable $callable): PromiseInterface` method is a shortcut for calls: `getConnection()` -> `transaction()` -> `releaseConnection()`:
+
+```php
+$pool->transaction(function(ConnectionInterface $connection) {
+    $connection->query("UPDATE users SET active = 0 WHERE id = 2");
+});
 ```
 
 ## Install

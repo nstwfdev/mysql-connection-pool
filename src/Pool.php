@@ -85,6 +85,26 @@ final class Pool implements PoolInterface
         return $deferred->promise();
     }
 
+    public function query(string $sql, array $params = []): PromiseInterface
+    {
+        return $this
+            ->getConnection()
+            ->then(function (ConnectionInterface $connection) use ($sql, $params) {
+                return $connection->query($sql, $params)
+                    ->always(fn() => $this->releaseConnection($connection));
+            });
+    }
+
+    public function transaction(callable $callable): PromiseInterface
+    {
+        return $this
+            ->getConnection()
+            ->then(function (ConnectionInterface $connection) use ($callable) {
+                return $connection->transaction($callable)
+                    ->always(fn() => $this->releaseConnection($connection));
+            });
+    }
+
     public function releaseConnection(ConnectionInterface $connection): void
     {
         if (!$this->occupied->contains($connection)) {
