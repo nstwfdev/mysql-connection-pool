@@ -1,0 +1,30 @@
+{
+  "name": "nstwf/mysql-connection-pool",
+  "description": "Reactphp MySQL connection pool",
+  "license": [
+    "MIT"
+  ],
+  "authors": [
+    {
+      "name": "Timur Sadullayev",
+      "email": "nstwf.pro@gmail.com"
+    }
+  ],
+  "require": {
+    "nstwf/mysql-connection": "^1.2",
+    "react/async": "^4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Nstwf\\MysqlConnectionPool\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Nstwf\\MysqlConnectionPool\\": "tests/src"
+    }
+  }
+}
