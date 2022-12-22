@@ -52,8 +52,13 @@ $pool = new \Nstwf\MysqlConnectionPool\Pool('localhost:3306', null, 10, false);
 The `getConnection(): PromiseInterface<ConnectionInterface>` method can be used to create a new `ConnectionInterface` instance if no free connections available, otherwise select one of free
 
 ```php
-$connection = $pool->getConnection();
-$connection->query("UPDATE users SET blocked = 1 WHERE id = 3");
+$pool->getConnection()
+     ->then(function (ConnectionInterface $connection) {
+        $connection->query("UPDATE users SET active = 0 WHERE id = 2");
+        $connection->query("UPDATE users SET blocked = 1 WHERE id = 3");
+        
+        $pool->releaseConnection($connection);
+     });
 ```
 
 #### releaseConnection
