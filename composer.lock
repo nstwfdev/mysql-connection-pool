@@ -55,16 +55,16 @@
         },
         {
             "name": "nstwf/mysql-connection",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nstwfdev/mysql-connection.git",
-                "reference": "dc1641edd96fcb3d841752fb8cb37428b9fc415d"
+                "reference": "1d7cc0cd4c5191d87ed9118f4f2a1ddad0a3239e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nstwfdev/mysql-connection/zipball/dc1641edd96fcb3d841752fb8cb37428b9fc415d",
-                "reference": "dc1641edd96fcb3d841752fb8cb37428b9fc415d",
+                "url": "https://api.github.com/repos/nstwfdev/mysql-connection/zipball/1d7cc0cd4c5191d87ed9118f4f2a1ddad0a3239e",
+                "reference": "1d7cc0cd4c5191d87ed9118f4f2a1ddad0a3239e",
                 "shasum": ""
             },
             "require": {
@@ -92,9 +92,9 @@
             "description": "Reactphp MySQL transactional connection wrapper",
             "support": {
                 "issues": "https://github.com/nstwfdev/mysql-connection/issues",
-                "source": "https://github.com/nstwfdev/mysql-connection/tree/v1.2.0"
+                "source": "https://github.com/nstwfdev/mysql-connection/tree/v1.2.1"
             },
-            "time": "2022-12-21T14:01:13+00:00"
+            "time": "2022-12-22T08:00:17+00:00"
         },
         {
             "name": "react/cache",
