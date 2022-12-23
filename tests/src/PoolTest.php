@@ -119,7 +119,7 @@ class PoolTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 $expectedConnection1,
                 $expectedConnection2,
-                $expectedConnection3
+                $expectedConnection3,
             );
 
         $pool = new Pool('localhost:3306', $factory, 3);
@@ -131,10 +131,19 @@ class PoolTest extends TestCase
         $queueConnection1 = $pool->getConnection();
         $queueConnection2 = $pool->getConnection();
         $queueConnection3 = $pool->getConnection();
+        $queueConnection4 = $pool->getConnection();
 
-        $this->assertPromise($queueConnection1, $expectedConnection3, fn() => $pool->releaseConnection($connection3));
-        $this->assertPromise($queueConnection2, $expectedConnection2, fn() => $pool->releaseConnection($connection2));
-        $this->assertPromise($queueConnection3, $expectedConnection1, fn() => $pool->releaseConnection($connection1));
+        $pool->releaseConnection($connection3);
+        $this->assertEquals($expectedConnection3, await($queueConnection1));
+
+        $pool->releaseConnection($connection2);
+        $this->assertEquals($expectedConnection2, await($queueConnection2));
+
+        $pool->releaseConnection($connection1);
+        $this->assertEquals($expectedConnection1, await($queueConnection3));
+
+        $pool->releaseConnection($connection1);
+        $this->assertEquals($expectedConnection1, await($queueConnection4));
     }
 
     public function testGetConnectionWithConnectionLimitAndNotWaitConnectionWillThrowException()

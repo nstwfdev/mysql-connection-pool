@@ -58,6 +58,8 @@ final class Pool implements PoolInterface
     {
         if ($this->free->count() > 0) {
             //TODO: add selector strategy
+            $this->free->rewind();
+
             $connection = $this->free->current();
 
             $this->free->detach($connection);
@@ -112,11 +114,16 @@ final class Pool implements PoolInterface
         }
 
         if ($this->queue->count() === 0) {
+            $this->occupied->rewind();
             $this->occupied->detach($connection);
+
             $this->free->attach($connection);
         } else {
+            $this->queue->rewind();
+
             /** @var Deferred $deferred */
             $deferred = $this->queue->current();
+
             $this->queue->detach($deferred);
 
             $deferred->resolve($connection);
