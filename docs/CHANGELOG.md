@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/nstwfdev/mysql-connection-pool/compare/v1.1.0...v1.1.1) (2022-12-23)
+
+
+### Fix
+
+* spl object storage rewind before detach ([16f241d](https://github.com/nstwfdev/mysql-connection-pool/commit/16f241dc59e48cad17d202c9cbb3f4cbb6fb06a3))
+
 # [1.1.0](https://github.com/nstwfdev/mysql-connection-pool/compare/v1.0.0...v1.1.0) (2022-12-22)
 
 
