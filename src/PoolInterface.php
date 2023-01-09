@@ -43,4 +43,9 @@ interface PoolInterface
      * @return void
      */
     public function releaseConnection(ConnectionInterface $connection): void;
+
+    public function query(string $sql, array $params = []): PromiseInterface;
+
+    public function transaction(callable $callable): PromiseInterface;
+
 }
