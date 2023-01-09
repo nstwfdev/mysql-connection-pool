@@ -27,7 +27,7 @@ $pool = new \Nstwf\MysqlConnectionPool\Pool('localhost:3306');
 
 $pool
     ->getConnection()
-    ->then(function (ConnectionInterface $connection) use ($pool) {
+    ->then(function (\Nstwf\MysqlConnection\ConnectionInterface $connection) use ($pool) {
         $connection->query("UPDATE users SET blocked = 1 WHERE id = 3");
         
         $pool->releaseConnection($connection);
@@ -54,13 +54,14 @@ $pool = new \Nstwf\MysqlConnectionPool\Pool('localhost:3306', null, 10, false);
 The `getConnection(): PromiseInterface<ConnectionInterface>` method can be used to create a new `ConnectionInterface` instance if no free connections available, otherwise select one of free
 
 ```php
-$pool->getConnection()
-     ->then(function (ConnectionInterface $connection) {
-        $connection->query("UPDATE users SET active = 0 WHERE id = 2");
-        $connection->query("UPDATE users SET blocked = 1 WHERE id = 3");
-        
-        $pool->releaseConnection($connection);
-     });
+$pool
+    ->getConnection()
+    ->then(function (\Nstwf\MysqlConnection\ConnectionInterface $connection) {
+       $connection->query("UPDATE users SET active = 0 WHERE id = 2");
+       $connection->query("UPDATE users SET blocked = 1 WHERE id = 3");
+       
+       $pool->releaseConnection($connection);
+    });
 ```
 
 #### releaseConnection
@@ -73,10 +74,10 @@ $pool->releaseConnection($connection);
 
 #### query
 
-The `query(ConnectionInterface $connection): PromiseInterface<QueryResult>` method is a shortcut for callsЖ `getConnection()` -> `query()` -> `releaseConnection()`
+The `query(string $sql, array $params = []): PromiseInterface<QueryResult>` method is a shortcut for calls `getConnection()` -> `query()` -> `releaseConnection()`
 
 ```php
-$pool->releaseConnection($connection);
+$pool->query("UPDATE users SET active = 0 WHERE id = ?", [2]);
 ```
 
 #### transaction
@@ -84,7 +85,7 @@ $pool->releaseConnection($connection);
 The `transaction(callable $callable): PromiseInterface` method is a shortcut for calls: `getConnection()` -> `transaction()` -> `releaseConnection()`:
 
 ```php
-$pool->transaction(function(ConnectionInterface $connection) {
+$pool->transaction(function(\Nstwf\MysqlConnection\ConnectionInterface $connection) {
     $connection->query("UPDATE users SET active = 0 WHERE id = 2");
 });
 ```
@@ -124,4 +125,5 @@ vendor/bin/phpunit
 
 MIT, see [LICENSE file](LICENSE).
 
+- [friends-of-reactphp/mysql](https://github.com/friends-of-reactphp/mysql) - main project
 - [mysqljs/mysql](https://github.com/mysqljs/mysql) - main concept
