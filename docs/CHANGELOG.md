@@ -1,3 +1,14 @@
+## [1.1.2](https://github.com/nstwfdev/mysql-connection-pool/compare/v1.1.1...v1.1.2) (2023-01-09)
+
+
+### Docs
+
+* fix namespaces in examples ([8edb845](https://github.com/nstwfdev/mysql-connection-pool/commit/8edb8455764a492f1e6196859084ae2bcdbc448f))
+
+### Fix
+
+* add 'query' and 'transaction' methods to PoolInterface ([0bb4efe](https://github.com/nstwfdev/mysql-connection-pool/commit/0bb4efe1a165ec534665f50b585989c21fbeedf0))
+
 ## [1.1.1](https://github.com/nstwfdev/mysql-connection-pool/compare/v1.1.0...v1.1.1) (2022-12-23)
 
 
