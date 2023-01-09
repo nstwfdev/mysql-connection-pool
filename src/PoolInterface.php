@@ -44,8 +44,31 @@ interface PoolInterface
      */
     public function releaseConnection(ConnectionInterface $connection): void;
 
+    /**
+     * Shortcut for calls `getConnection()` -> `query()` -> `releaseConnection()`
+     *
+     * ```php
+     * $pool->query("UPDATE users SET active = 0 WHERE id = ?", [2]);
+     * ```
+     *
+     * @param string $sql
+     * @param array  $params
+     *
+     * @return PromiseInterface
+     */
     public function query(string $sql, array $params = []): PromiseInterface;
 
+    /**
+     * Shortcut for calls `getConnection()` -> `transaction()` -> `releaseConnection()`
+     *
+     * ```php
+     * $pool->query("UPDATE users SET active = 0 WHERE id = ?", [2]);
+     * ```
+     *
+     * @param callable $callable
+     *
+     * @return PromiseInterface
+     */
     public function transaction(callable $callable): PromiseInterface;
 
 }
