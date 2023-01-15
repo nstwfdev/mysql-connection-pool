@@ -40,7 +40,7 @@ final class Pool implements PoolInterface
         #[\SensitiveParameter]
         string $uri,
         ConnectionFactoryInterface $factory = null,
-        int $connectionLimit = 5,
+        int $connectionLimit = 10,
         bool $waitForConnections = true,
     ) {
         $this->uri = $uri;
