@@ -1,3 +1,14 @@
+# [1.2.0](https://github.com/nstwfdev/mysql-connection-pool/compare/v1.1.2...v1.2.0) (2023-01-15)
+
+
+### Chore
+
+* add php docs to PoolInterface ([d44c097](https://github.com/nstwfdev/mysql-connection-pool/commit/d44c0973ad286a6743b38467622e2ae208559a8b))
+
+### Update
+
+* Increase default connection limit to 10 ([a82da3e](https://github.com/nstwfdev/mysql-connection-pool/commit/a82da3eae5b1935faecb210e777f15050ede316e))
+
 ## [1.1.2](https://github.com/nstwfdev/mysql-connection-pool/compare/v1.1.1...v1.1.2) (2023-01-09)
 
 
