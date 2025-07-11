@@ -1,11 +1,7 @@
 <?php
-
-
 declare(strict_types=1);
 
-
 namespace Nstwf\MysqlConnectionPool;
-
 
 use Nstwf\MysqlConnection\ConnectionInterface;
 use React\Promise\PromiseInterface;
@@ -38,7 +34,7 @@ interface PoolInterface
      * $pool->releaseConnection($connection);
      * ```
      *
-     * @param ConnectionInterface $connection
+     * @param  ConnectionInterface  $connection
      *
      * @return void
      */
@@ -51,8 +47,8 @@ interface PoolInterface
      * $pool->query("UPDATE users SET active = 0 WHERE id = ?", [2]);
      * ```
      *
-     * @param string $sql
-     * @param array  $params
+     * @param  string  $sql
+     * @param  array  $params
      *
      * @return PromiseInterface
      */
@@ -65,7 +61,7 @@ interface PoolInterface
      * $pool->query("UPDATE users SET active = 0 WHERE id = ?", [2]);
      * ```
      *
-     * @param callable $callable
+     * @param  callable  $callable
      *
      * @return PromiseInterface
      */

@@ -9,15 +9,14 @@ use Nstwf\MysqlConnection\Factory\ConnectionFactoryInterface;
 use PHPUnit\Framework\TestCase;
 use React\MySQL\QueryResult;
 use React\Promise\PromiseInterface;
-
-
 use function React\Async\await;
 use function React\Promise\resolve;
 
 
 class PoolTest extends TestCase
 {
-    public function testGetConnectionWithoutFreeAndOccupiedWillReturnNewConnection()
+    public function testGetConnectionWithoutFreeAndOccupiedWillReturnNewConnection(
+    ): void
     {
         $factory = $this
             ->getMockBuilder(ConnectionFactoryInterface::class)
@@ -27,16 +26,19 @@ class PoolTest extends TestCase
             ->expects($this->once())
             ->method('createConnection')
             ->with('localhost:3306')
-            ->willReturn($this->getMockBuilder(ConnectionInterface::class)->getMock());
+            ->willReturn($this->getMockBuilder(ConnectionInterface::class)
+                ->getMock());
 
         $pool = new Pool('localhost:3306', $factory);
         $pool->getConnection();
     }
 
-    public function testGetConnectionTwiceWillReturnDifferentConnection()
+    public function testGetConnectionTwiceWillReturnDifferentConnection(): void
     {
-        $connection1 = $this->getMockBuilder(ConnectionInterface::class)->getMock();
-        $connection2 = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $connection1 = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
+        $connection2 = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
 
         $factory = $this
             ->getMockBuilder(ConnectionFactoryInterface::class)
@@ -55,9 +57,11 @@ class PoolTest extends TestCase
         $this->assertEquals($connection2, await($pool->getConnection()));
     }
 
-    public function testGetConnectionAfterReleasePreviousWillReturnTheSameConnection()
+    public function testGetConnectionAfterReleasePreviousWillReturnTheSameConnection(
+    ): void
     {
-        $expectedConnection = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $expectedConnection = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
 
         $factory = $this
             ->getMockBuilder(ConnectionFactoryInterface::class)
@@ -80,9 +84,11 @@ class PoolTest extends TestCase
         $this->assertEquals($expectedConnection, $connection2);
     }
 
-    public function testGetConnectionWithConnectionLimitWhileNoFreeConnectionsWillWaitPreviousConnectionRelease()
+    public function testGetConnectionWithConnectionLimitWhileNoFreeConnectionsWillWaitPreviousConnectionRelease(
+    ): void
     {
-        $expectedConnection = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $expectedConnection = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
 
         $factory = $this
             ->getMockBuilder(ConnectionFactoryInterface::class)
@@ -99,14 +105,19 @@ class PoolTest extends TestCase
         $connection = await($pool->getConnection());
         $this->assertEquals($expectedConnection, $connection);
 
-        $this->assertPromise($pool->getConnection(), $connection, fn() => $pool->releaseConnection($connection));
+        $this->assertPromise($pool->getConnection(), $connection,
+            fn() => $pool->releaseConnection($connection));
     }
 
-    public function testGetConnectionQueueWithConnectionLimitWhileNoFreeConnectionsWillReturnInRightOrder()
+    public function testGetConnectionQueueWithConnectionLimitWhileNoFreeConnectionsWillReturnInRightOrder(
+    ): void
     {
-        $expectedConnection1 = $this->getMockBuilder(ConnectionInterface::class)->getMock();
-        $expectedConnection2 = $this->getMockBuilder(ConnectionInterface::class)->getMock();
-        $expectedConnection3 = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $expectedConnection1 = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
+        $expectedConnection2 = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
+        $expectedConnection3 = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
 
         $factory = $this
             ->getMockBuilder(ConnectionFactoryInterface::class)
@@ -146,7 +157,8 @@ class PoolTest extends TestCase
         $this->assertEquals($expectedConnection1, await($queueConnection4));
     }
 
-    public function testGetConnectionWithConnectionLimitAndNotWaitConnectionWillThrowException()
+    public function testGetConnectionWithConnectionLimitAndNotWaitConnectionWillThrowException(
+    ): void
     {
         $factory = $this
             ->getMockBuilder(ConnectionFactoryInterface::class)
@@ -156,7 +168,8 @@ class PoolTest extends TestCase
             ->expects($this->exactly(1))
             ->method('createConnection')
             ->with('localhost:3306')
-            ->willReturn($this->getMockBuilder(ConnectionInterface::class)->getMock());
+            ->willReturn($this->getMockBuilder(ConnectionInterface::class)
+                ->getMock());
 
         $pool = new Pool('localhost:3306', $factory, 1, false);
 
@@ -166,7 +179,7 @@ class PoolTest extends TestCase
         $connection2 = await($pool->getConnection());
     }
 
-    public function testReleaseConnectionTwiceWillDoNothing()
+    public function testReleaseConnectionTwiceWillDoNothing(): void
     {
         $factory = $this
             ->getMockBuilder(ConnectionFactoryInterface::class)
@@ -176,7 +189,8 @@ class PoolTest extends TestCase
             ->expects($this->exactly(1))
             ->method('createConnection')
             ->with('localhost:3306')
-            ->willReturn($this->getMockBuilder(ConnectionInterface::class)->getMock());
+            ->willReturn($this->getMockBuilder(ConnectionInterface::class)
+                ->getMock());
 
         $pool = new Pool('localhost:3306', $factory, 1, false);
 
@@ -185,7 +199,7 @@ class PoolTest extends TestCase
         $pool->releaseConnection($connection);
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $connection = $this
             ->getMockBuilder(ConnectionInterface::class)
@@ -208,12 +222,13 @@ class PoolTest extends TestCase
             ->willReturn($connection);
 
         $pool = new Pool('localhost:3306', $factory);
-        $queryResult = await($pool->query('UPDATE users SET active = 0 WHERE id = 2'));
+        $queryResult
+            = await($pool->query('UPDATE users SET active = 0 WHERE id = 2'));
 
         $this->assertEquals(new QueryResult(), $queryResult);
     }
 
-    public function testTransaction()
+    public function testTransaction(): void
     {
         $connection = $this
             ->getMockBuilder(ConnectionInterface::class)
@@ -222,7 +237,7 @@ class PoolTest extends TestCase
         $connection
             ->expects($this->once())
             ->method('transaction')
-            ->willReturn(resolve());
+            ->willReturn(resolve(null));
 
         $factory = $this
             ->getMockBuilder(ConnectionFactoryInterface::class)
@@ -238,15 +253,19 @@ class PoolTest extends TestCase
 
         $queryResult = await(
             $pool->transaction(
-                fn(ConnectionInterface $connection) => $connection->query('UPDATE users SET active = 0 WHERE id = 2')
+                fn(ConnectionInterface $connection
+                ) => $connection->query('UPDATE users SET active = 0 WHERE id = 2')
             )
         );
 
         $this->assertEquals(null, $queryResult);
     }
 
-    private function assertPromise(PromiseInterface $promise, mixed $expectedPromiseValue, callable $callable)
-    {
+    private function assertPromise(
+        PromiseInterface $promise,
+        mixed $expectedPromiseValue,
+        callable $callable
+    ): void {
         $callable();
 
         $this->assertEquals($expectedPromiseValue, await($promise));

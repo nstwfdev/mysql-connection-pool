@@ -1,11 +1,7 @@
 <?php
-
-
 declare(strict_types=1);
 
-
 namespace Nstwf\MysqlConnectionPool;
-
 
 use Nstwf\MysqlConnection\ConnectionInterface;
 use Nstwf\MysqlConnection\Factory\ConnectionFactory;
@@ -13,8 +9,7 @@ use Nstwf\MysqlConnection\Factory\ConnectionFactoryInterface;
 use React\MySQL\Factory;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
-
-
+use SplObjectStorage;
 use function React\Promise\reject;
 use function React\Promise\resolve;
 
@@ -25,16 +20,16 @@ final class Pool implements PoolInterface
     private ConnectionFactoryInterface $factory;
     private bool $waitForConnections;
     private int $connectionLimit;
-    private \SplObjectStorage $free;
-    private \SplObjectStorage $occupied;
-    private \SplObjectStorage $all;
-    private \SplObjectStorage $queue;
+    private SplObjectStorage $free;
+    private SplObjectStorage $occupied;
+    private SplObjectStorage $all;
+    private SplObjectStorage $queue;
 
     /**
-     * @param string                          $uri                Uri
-     * @param ConnectionFactoryInterface|null $factory
-     * @param int                             $connectionLimit    0 - for unlimited connections, > 0 - exact count of connections
-     * @param bool                            $waitForConnections If set `false` - throw exception while connection limit reached on `getConnection` method
+     * @param  string  $uri  Uri
+     * @param  ConnectionFactoryInterface|null  $factory
+     * @param  int  $connectionLimit  0 - for unlimited connections, > 0 - exact count of connections
+     * @param  bool  $waitForConnections  If set `false` - throw exception while connection limit reached on `getConnection` method
      */
     public function __construct(
         #[\SensitiveParameter]
@@ -48,10 +43,10 @@ final class Pool implements PoolInterface
         $this->connectionLimit = $connectionLimit;
         $this->waitForConnections = $waitForConnections;
 
-        $this->free = new \SplObjectStorage();
-        $this->occupied = new \SplObjectStorage();
-        $this->all = new \SplObjectStorage();
-        $this->queue = new \SplObjectStorage();
+        $this->free = new SplObjectStorage();
+        $this->occupied = new SplObjectStorage();
+        $this->all = new SplObjectStorage();
+        $this->queue = new SplObjectStorage();
     }
 
     public function getConnection(): PromiseInterface
@@ -68,7 +63,9 @@ final class Pool implements PoolInterface
             return resolve($connection);
         }
 
-        if ($this->connectionLimit === 0 || $this->all->count() < $this->connectionLimit) {
+        if ($this->connectionLimit === 0
+            || $this->all->count() < $this->connectionLimit
+        ) {
             $connection = $this->createConnection();
             $this->occupied->attach($connection);
             $this->all->attach($connection);
@@ -91,7 +88,10 @@ final class Pool implements PoolInterface
     {
         return $this
             ->getConnection()
-            ->then(function (ConnectionInterface $connection) use ($sql, $params) {
+            ->then(function (ConnectionInterface $connection) use (
+                $sql,
+                $params
+            ) {
                 return $connection->query($sql, $params)
                     ->always(fn() => $this->releaseConnection($connection));
             });
