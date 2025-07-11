@@ -1,3 +1,21 @@
+## [1.2.1](https://github.com/nstwfdev/mysql-connection-pool/compare/v1.2.0...v1.2.1) (2025-07-11)
+
+
+### Chore
+
+* new strict  exception instead of global ([708d4d7](https://github.com/nstwfdev/mysql-connection-pool/commit/708d4d71960bcc3d3750170d044c6194e33cde6d))
+
+### Fix
+
+* remove deprecated methods ([cb83c7d](https://github.com/nstwfdev/mysql-connection-pool/commit/cb83c7d0042f11acba4fc4f396321b1abe6290d3))
+
+### Upgrade
+
+* Bump actions/checkout from 3 to 4 ([3eb8ac1](https://github.com/nstwfdev/mysql-connection-pool/commit/3eb8ac13d121bf779ecb6814cd476a34afd49688))
+* Bump codecov/codecov-action from 3 to 4 ([e5c12a9](https://github.com/nstwfdev/mysql-connection-pool/commit/e5c12a95ff8e875898043b143e10d36453697c71))
+* Bump cycjimmy/semantic-release-action from 3 to 4 ([3b34ee7](https://github.com/nstwfdev/mysql-connection-pool/commit/3b34ee7d51c0d781f561790d95bfeb8b103eb703))
+* nstwf/mysql-connection and phpunit are upgraded ([c1c77b6](https://github.com/nstwfdev/mysql-connection-pool/commit/c1c77b69351faa5539fcf7ef5bb521550c3df383))
+
 # [1.2.0](https://github.com/nstwfdev/mysql-connection-pool/compare/v1.1.2...v1.2.0) (2023-01-15)
 
 
