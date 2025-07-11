@@ -94,7 +94,7 @@ final class Pool implements PoolInterface
                 $params
             ) {
                 return $connection->query($sql, $params)
-                    ->always(fn() => $this->releaseConnection($connection));
+                    ->finally(fn() => $this->releaseConnection($connection));
             });
     }
 
@@ -104,7 +104,7 @@ final class Pool implements PoolInterface
             ->getConnection()
             ->then(function (ConnectionInterface $connection) use ($callable) {
                 return $connection->transaction($callable)
-                    ->always(fn() => $this->releaseConnection($connection));
+                    ->finally(fn() => $this->releaseConnection($connection));
             });
     }
 
