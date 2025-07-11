@@ -6,6 +6,7 @@ namespace Nstwf\MysqlConnectionPool;
 use Nstwf\MysqlConnection\ConnectionInterface;
 use Nstwf\MysqlConnection\Factory\ConnectionFactory;
 use Nstwf\MysqlConnection\Factory\ConnectionFactoryInterface;
+use Nstwf\MysqlConnectionPool\Exception\NoAvailableConnectionsException;
 use React\MySQL\Factory;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
@@ -74,7 +75,7 @@ final class Pool implements PoolInterface
         }
 
         if (!$this->waitForConnections) {
-            return reject(new \Exception('No available connections'));
+            return reject(new NoAvailableConnectionsException());
         }
 
         $deferred = new Deferred();

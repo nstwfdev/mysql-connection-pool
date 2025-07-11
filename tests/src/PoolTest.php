@@ -6,6 +6,7 @@ namespace Nstwf\MysqlConnectionPool;
 
 use Nstwf\MysqlConnection\ConnectionInterface;
 use Nstwf\MysqlConnection\Factory\ConnectionFactoryInterface;
+use Nstwf\MysqlConnectionPool\Exception\NoAvailableConnectionsException;
 use PHPUnit\Framework\TestCase;
 use React\MySQL\QueryResult;
 use React\Promise\PromiseInterface;
@@ -175,7 +176,7 @@ class PoolTest extends TestCase
 
         $connection1 = await($pool->getConnection());
 
-        $this->expectException(\Exception::class);
+        $this->expectException(NoAvailableConnectionsException::class);
         $connection2 = await($pool->getConnection());
     }
 
